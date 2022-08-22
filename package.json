@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "lint:css": "stylelint src --custom-syntax postcss-html",
+    "lint:css:fix": "yarn lint:css --fix"
   },
   "dependencies": {
     "bootstrap": "^5.2.0",
@@ -24,9 +26,16 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
+    "postcss-html": "^1.5.0",
     "prettier": "^2.4.1",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
+    "stylelint": "^14.11.0",
+    "stylelint-config-clean-order": "^0.9.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard-scss": "^5.0.0",
+    "stylelint-scss": "^4.3.0",
+    "stylelint-webpack-plugin": "^3.3.0",
     "vue-template-compiler": "^2.6.14"
   },
   "browserslist": [
