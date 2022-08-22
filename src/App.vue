@@ -18,6 +18,7 @@
         @newText="fetchText"
         @removeTypingHistory="removeTypingHistory"
       />
+      <texts-history :historyList="typingTextsHistoryList" @deleteRecords="removeTypingHistory" />
     </div>
   </div>
 </template>
@@ -29,6 +30,7 @@ import getText from '@/api/getText'
 import LocalStorageUtil from './utils/localStorageUtil'
 import Loader from './components/UI/UiLoader.vue'
 import TypingTrainerContainer from './components/TypingTrainerContainer.vue'
+import TextsHistory from './components/TextsHistory.vue'
 import Button from './components/UI/UiButton.vue'
 
 export default {
