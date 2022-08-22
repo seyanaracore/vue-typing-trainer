@@ -46,7 +46,7 @@ export default {
     historyList: {
       type: Array,
       required: true,
-      default: new Array(0),
+      default: () => [],
     },
   },
   methods: {
