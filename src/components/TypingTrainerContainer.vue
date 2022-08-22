@@ -13,6 +13,7 @@
         :accuracy="accuracy"
         :charsPerMinute="charsPerMinute"
       />
+      <control-buttons @resetProgress="resetProgress" @newText="newText" />
     </aside>
   </div>
 </template>
