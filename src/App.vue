@@ -116,14 +116,15 @@ export default {
   min-height: 100vh;
   padding: 0 12px;
 
-  background: rgb(180, 180, 182);
+  background: rgb(180 180 182);
   background: linear-gradient(
     90deg,
-    rgba(180, 180, 182, 1) 0%,
-    rgba(22, 129, 122, 1) 56%,
-    rgba(60, 133, 99, 1) 100%
+    rgb(180 180 182 / 100%) 0%,
+    rgb(22 129 122 / 100%) 56%,
+    rgb(60 133 99 / 100%) 100%
   );
 }
+
 .appContainer {
   width: 100%;
   max-width: 1200px;
@@ -135,8 +136,10 @@ export default {
   border-radius: 25px;
   box-shadow: rgb(60 64 67 / 30%) 0 1px 2px 0, rgb(60 64 67 / 15%) 0 2px 6px 2px;
 }
+
 .loaderContainer {
   width: 100%;
+
   text-align: center;
 }
 </style>
