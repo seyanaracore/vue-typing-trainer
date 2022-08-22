@@ -11,6 +11,13 @@
         <h3 class="text-danger py-2">Произошла ошибка...</h3>
         <Button @onClick="fetchText">Попробовать снова</Button>
       </div>
+      <typing-trainer-container
+        v-else
+        :textForTyping="textForTyping"
+        @handleFinishTyping="handleFinishTyping"
+        @newText="fetchText"
+        @removeTypingHistory="removeTypingHistory"
+      />
     </div>
   </div>
 </template>
@@ -21,11 +28,12 @@ import { LOCAL_TYPING_RESULTS_KEY } from './constants'
 import getText from '@/api/getText'
 import LocalStorageUtil from './utils/localStorageUtil'
 import Loader from './components/UI/UiLoader.vue'
+import TypingTrainerContainer from './components/TypingTrainerContainer.vue'
 import Button from './components/UI/UiButton.vue'
 
 export default {
   name: 'App',
-  components: {},
+  components: { Loader, TypingTrainerContainer, TextsHistory, Button },
   data() {
     return {
       textForTyping: '',
