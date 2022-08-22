@@ -50,7 +50,7 @@
         "eslint --fix"
     ],
     "*.{html,vue,css,sass,scss}": [
-        "stylelint --fix"
+        "stylelint src --custom-syntax postcss-html --fix"
     ]
   }
 }
