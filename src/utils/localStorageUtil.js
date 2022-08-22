@@ -1,10 +1,12 @@
 class LocalStorageUtil {
+  // eslint-disable-next-line consistent-return
   static get(key = null) {
     if (!key) return null
 
     try {
       return JSON.parse(localStorage.getItem(key))
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error)
     }
   }

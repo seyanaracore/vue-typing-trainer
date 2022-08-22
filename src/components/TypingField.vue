@@ -35,6 +35,7 @@ export default {
       required: true,
     },
   },
+
   methods: {
     handleKeyDown(e) {
       this.$emit('inputHandler', e)
@@ -43,9 +44,7 @@ export default {
       this.$refs.inputField.focus()
     },
   },
-  updated() {
-    this.focusInput()
-  },
+
   mounted() {
     this.focusInput()
   },

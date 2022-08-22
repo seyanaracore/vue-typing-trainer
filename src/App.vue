@@ -25,17 +25,18 @@
 
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
-import { LOCAL_TYPING_RESULTS_KEY } from './constants'
-import getText from '@/api/getText'
 import LocalStorageUtil from './utils/localStorageUtil'
+import getText from './api/getText'
 import Loader from './components/UI/UiLoader.vue'
 import TypingTrainerContainer from './components/TypingTrainerContainer.vue'
 import TextsHistory from './components/TextsHistory.vue'
 import Button from './components/UI/UiButton.vue'
+import { LOCAL_TYPING_RESULTS_KEY } from './constants'
 
 export default {
   name: 'App',
   components: { Loader, TypingTrainerContainer, TextsHistory, Button },
+
   data() {
     return {
       textForTyping: '',
@@ -44,21 +45,26 @@ export default {
       typingTextsHistoryList: [],
     }
   },
+
   methods: {
     async fetchText() {
       this.isLoading = true
+
       try {
         const response = await getText()
         const [text] = response
+
         this.textForTyping = text
       } catch (e) {
         this.fetchError = true
       }
+
       this.isLoading = false
     },
     saveTypingResult(typeResult) {
       const typeResultWithId = {
         ...typeResult,
+        // eslint-disable-next-line no-unsafe-optional-chaining
         id: this.typingTextsHistoryList.at(-1)?.id + 1 || 1,
       }
 
@@ -70,6 +76,7 @@ export default {
     },
     getTypingsHistory() {
       const historyList = LocalStorageUtil.get(LOCAL_TYPING_RESULTS_KEY) || []
+
       this.typingTextsHistoryList = historyList
     },
     removeTypingHistory(record) {
@@ -79,6 +86,7 @@ export default {
         LocalStorageUtil.delete(LOCAL_TYPING_RESULTS_KEY)
       } else {
         const filteredHistory = this.typingTextsHistoryList.filter((text) => text.id !== record.id)
+
         this.typingTextsHistoryList = filteredHistory
 
         LocalStorageUtil.set(filteredHistory, LOCAL_TYPING_RESULTS_KEY)
@@ -91,6 +99,7 @@ export default {
       this.fetchText()
     },
   },
+
   created() {
     this.fetchText()
     this.getTypingsHistory()

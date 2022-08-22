@@ -42,6 +42,7 @@ import Button from './UI/UiButton.vue'
 
 export default {
   components: { Button },
+
   props: {
     historyList: {
       type: Array,
@@ -49,6 +50,7 @@ export default {
       default: () => [],
     },
   },
+
   methods: {
     deleteHistoryRecord(item) {
       this.$emit('deleteRecords', item)
@@ -64,6 +66,7 @@ export default {
 .textCol {
   width: 600px;
 }
+
 .removeBtn {
   padding: 5px 10px !important;
 

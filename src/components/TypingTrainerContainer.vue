@@ -20,13 +20,14 @@
 
 <script>
 import layoutValidator from '@/utils/layoutValidator'
+import { EXCEPTIONS_KEYS } from '@/constants'
 import TypingField from './TypingField.vue'
 import TypingInfo from './TypingInfo.vue'
-import { EXCEPTIONS_KEYS } from '@/constants'
 import ControlButtons from './ControlButtons.vue'
 
 export default {
   components: { TypingField, TypingInfo, ControlButtons },
+
   props: {
     textForTyping: {
       type: String,
@@ -34,6 +35,7 @@ export default {
       default: '',
     },
   },
+
   data() {
     return {
       errorsCount: 0,
@@ -46,6 +48,7 @@ export default {
       cpmInterval: null,
     }
   },
+
   computed: {
     charsPerMinute() {
       const keysSummary = this.charsCountsListPerSecond.reduce((a, b) => a + b, 0)
@@ -58,6 +61,7 @@ export default {
       return 100 - errorsPercent || 100
     },
   },
+
   methods: {
     newText() {
       this.$emit('newText')
@@ -92,14 +96,15 @@ export default {
       if (isExceptionKey) return
       if (!this.isInputStarted) this.isInputStarted = true
 
-      layoutValidator(pressedKey) ? (this.isInvalidLayout = false) : (this.isInvalidLayout = true)
+      if (layoutValidator(pressedKey)) this.isInvalidLayout = false
+      else this.isInvalidLayout = true
 
       const exceptedKey = this.textForTyping[this.expectedCharIndex]
 
       if (pressedKey === exceptedKey) {
-        this.expectedCharIndex = this.expectedCharIndex + 1
+        this.expectedCharIndex += 1
         this.isInputError = false
-        this.charsPerSecond = this.charsPerSecond + 1
+        this.charsPerSecond += 1
       } else {
         if (this.isInputError) return
         this.errorsCount += 1
@@ -107,6 +112,7 @@ export default {
       }
     },
   },
+
   watch: {
     isInputStarted: {
       handler() {
@@ -123,11 +129,13 @@ export default {
             errorsCount: this.errorsCount,
             charsPerMinute: this.charsPerMinute,
           }
+
           this.$emit('handleFinishTyping', typingResult)
         }
       },
     },
   },
+
   beforeUnmount() {
     this.stopCharsWatcher()
   },

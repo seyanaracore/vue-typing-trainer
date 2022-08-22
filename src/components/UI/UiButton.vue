@@ -7,12 +7,14 @@
 <script>
 export default {
   name: 'button-ui',
+
   props: {
     colorType: {
       type: String,
       default: 'btn-primary',
     },
   },
+
   methods: {
     clickHandler() {
       this.$emit('onClick')
@@ -20,5 +22,3 @@ export default {
   },
 }
 </script>
-
-<style></style>

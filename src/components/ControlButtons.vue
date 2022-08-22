@@ -10,6 +10,7 @@ import Button from './UI/UiButton.vue'
 
 export default {
   components: { Button },
+
   methods: {
     newTextHandler() {
       this.$emit('newText')
