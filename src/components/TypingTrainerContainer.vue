@@ -25,6 +25,17 @@ import TypingField from './TypingField.vue'
 import TypingInfo from './TypingInfo.vue'
 import ControlButtons from './ControlButtons.vue'
 
+const initialState = {
+  errorsCount: 0,
+  charsPerSecond: 0,
+  charsCountsListPerSecond: [],
+  isInputStarted: false,
+  isInvalidLayout: false,
+  expectedCharIndex: 0,
+  isInputError: false,
+  cpmInterval: null,
+}
+
 export default {
   components: { TypingField, TypingInfo, ControlButtons },
 
@@ -38,14 +49,7 @@ export default {
 
   data() {
     return {
-      errorsCount: 0,
-      charsPerSecond: 0,
-      charsCountsListPerSecond: [],
-      isInputStarted: false,
-      isInvalidLayout: false,
-      expectedCharIndex: 0,
-      isInputError: false,
-      cpmInterval: null,
+      ...initialState,
     }
   },
 
@@ -71,13 +75,10 @@ export default {
     },
     resetProgress() {
       this.stopCharsWatcher()
-      this.errorsCount = 0
-      this.charsPerSecond = 0
-      this.charsCountsListPerSecond = []
-      this.isInputStarted = false
-      this.isInvalidLayout = false
-      this.expectedCharIndex = 0
-      this.isInputError = false
+
+      Object.keys(initialState).forEach((key) => {
+        this[key] = initialState[key]
+      })
     },
     startCharsWatcher() {
       this.cpmInterval = setInterval(() => {
