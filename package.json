@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint src",
     "lint:css": "stylelint 'src/**/*.{css,scss,vue}'",
     "type-check": "vue-tsc --noEmit",
+    "lint-staged-script": "yarn type-check && vue-cli-service lint",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/eslint-parser": "^7.23.3",
+    "@testing-library/vue": "^8.0.1",
     "@types/lodash": "^4.14.202",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
@@ -26,6 +28,7 @@
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "@vue/compiler-sfc": "^3.4.5",
     "@vue/eslint-config-airbnb": "^7.0.0",
     "@vue/eslint-config-airbnb-with-typescript": "^8.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
@@ -61,8 +64,7 @@
   ],
   "lint-staged": {
     "*.{vue,js,ts}": [
-      "vue-cli-service lint",
-      "yarn type-check"
+      "yarn lint-staged-script"
     ],
     "*.{vue,css,scss}": [
       "stylelint"

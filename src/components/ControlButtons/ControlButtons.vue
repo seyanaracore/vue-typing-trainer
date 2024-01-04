@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import UiButton from './UI/UiButton.vue'
+import UiButton from '../UI/UiButton'
 
 export default defineComponent({
   components: { UiButton },

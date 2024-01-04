@@ -34,12 +34,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { defineComponent } from 'vue'
 import LocalStorageUtil from './utils/localStorageUtil'
 import getText from './api/getText'
-import Loader from './components/UI/UiLoader.vue'
-import TypingTrainerContainer from './components/TypingTrainerContainer.vue'
-import TextsHistory from './components/TextsHistory.vue'
+import Loader from './components/UI/UiLoader'
+import TypingTrainerContainer from './components/TypingTrainerContainer'
+import TextsHistory from './components/TextsHistory'
 import { LOCAL_TYPING_RESULTS_KEY } from './constants'
-import { LSDeleteRecordKey, NewTextItem, TextItemsList } from '@/types'
-import UiButton from '@/components/UI/UiButton.vue'
+import UiButton from './components/UI/UiButton'
+import { LSDeleteRecordKey, NewTextItem, TextItemsList } from './types'
 
 export default defineComponent({
   name: 'App',

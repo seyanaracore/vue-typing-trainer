@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import UiButton from './UI/UiButton.vue'
+import UiButton from '../UI/UiButton'
 import { TextItem, TextItemsList } from '@/types'
 
 export default defineComponent({

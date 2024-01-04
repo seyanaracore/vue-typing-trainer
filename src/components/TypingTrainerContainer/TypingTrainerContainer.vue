@@ -24,9 +24,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { clone } from 'lodash'
-import TypingField from './TypingField.vue'
-import TypingInfo from './TypingInfo.vue'
-import ControlButtons from './ControlButtons.vue'
+import TypingField from '../TypingField'
+import TypingInfo from '../TypingInfo'
+import ControlButtons from '../ControlButtons'
 import { EXCEPTIONS_KEYS } from '@/constants'
 import layoutValidator from '@/utils/layoutValidator'
 
