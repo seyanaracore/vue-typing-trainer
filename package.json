@@ -47,10 +47,14 @@
   ],
   "lint-staged": {
     "*.{vue,js}": [
-        "eslint --fix"
+      "eslint --fix"
     ],
     "*.{html,vue,css,sass,scss}": [
-        "stylelint src --custom-syntax postcss-html --fix"
+      "stylelint src --custom-syntax postcss-html --fix"
     ]
+  },
+  "volta": {
+    "node": "18.19.0",
+    "yarn": "1.22.21"
   }
 }
