@@ -1,26 +1,29 @@
 <template>
   <div
-    class="inputFieldContainer py-1"
+    class="input-field-container py-1"
     role="textbox"
     tabIndex="-1"
     @keydown="handleKeyDown"
     ref="inputField"
   >
     <span
-      v-for="(char, idx) in textForTyping.split('')"
+      v-for="(char, idx) in charsList"
       :key="idx"
       :class="{
-        aviableChar: idx === expectedCharIndex,
-        wrongChar: isInputError && idx === expectedCharIndex,
-        enteredChar: idx < expectedCharIndex,
+        'available-char': idx === expectedCharIndex,
+        'wrong-char': isInputError && idx === expectedCharIndex,
+        'entered-char': idx < expectedCharIndex,
       }"
-      >{{ char }}</span
     >
+      {{ char }}
+    </span>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     textForTyping: {
       type: String,
@@ -36,25 +39,35 @@ export default {
     },
   },
 
+  emits: ['inputHandler'],
+
+  computed: {
+    charsList(): string[] {
+      return this.textForTyping.split('')
+    },
+  },
+
   methods: {
-    handleKeyDown(e) {
+    handleKeyDown(e: KeyboardEvent) {
       this.$emit('inputHandler', e)
     },
     focusInput() {
-      this.$refs.inputField.focus()
+      const input = this.$refs.inputField as HTMLInputElement
+
+      input.focus()
     },
   },
 
   mounted() {
     this.focusInput()
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
 $error-color: #f36747;
 
-.inputFieldContainer {
+.input-field-container {
   font-size: 20px;
   line-height: 28px;
 
@@ -63,19 +76,17 @@ $error-color: #f36747;
   }
 }
 
-.enteredChar {
+.entered-char {
   color: green;
 }
 
-.aviableChar {
+.available-char {
   color: white;
-
   background-color: green;
 }
 
-.wrongChar {
+.wrong-char {
   color: white;
-
   background-color: $error-color;
 }
 </style>

@@ -1,12 +1,21 @@
 <template>
-  <button class="btn" type="button" :class="colorType" @click="clickHandler">
+  <button
+    class="btn"
+    type="button"
+    :class="colorType"
+    @click="clickHandler"
+  >
     <slot />
   </button>
 </template>
 
-<script>
-export default {
-  name: 'button-ui',
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'ButtonUi',
+
+  emits: ['click'],
 
   props: {
     colorType: {
@@ -17,8 +26,8 @@ export default {
 
   methods: {
     clickHandler() {
-      this.$emit('onClick')
+      this.$emit('click')
     },
   },
-}
+})
 </script>

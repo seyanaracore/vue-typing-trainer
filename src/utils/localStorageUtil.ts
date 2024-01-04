@@ -1,23 +1,25 @@
 class LocalStorageUtil {
   // eslint-disable-next-line consistent-return
-  static get(key = null) {
-    if (!key) return null
+  static get(key: string) {
+    if (!key) return undefined
 
     try {
-      return JSON.parse(localStorage.getItem(key))
+      return JSON.parse(localStorage.getItem(key) as any)
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
     }
   }
 
-  static set(value, key = null) {
+  static set(value: any, key: string) {
     if (!key) return
+
     localStorage.setItem(key, JSON.stringify(value))
   }
 
-  static delete(key) {
+  static delete(key: string) {
     if (!key) return
+
     localStorage.removeItem(key)
   }
 }

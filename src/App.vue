@@ -1,48 +1,56 @@
 <template>
   <div id="app">
-    <div class="appContainer">
+    <div class="app-container">
       <header>
         <h1>Тренажёр печати</h1>
       </header>
-      <div v-if="isLoading" class="loaderContainer">
+      <div
+        v-if="isLoading"
+        class="loader-container"
+      >
         <loader />
       </div>
       <div v-else-if="fetchError">
         <h3 class="text-danger py-2">Произошла ошибка...</h3>
-        <Button @onClick="fetchText">Попробовать снова</Button>
+        <UiButton @on-click="fetchText">Попробовать снова</UiButton>
       </div>
       <typing-trainer-container
         v-else
-        :textForTyping="textForTyping"
-        @handleFinishTyping="handleFinishTyping"
-        @newText="fetchText"
-        @removeTypingHistory="removeTypingHistory"
+        :text-for-typing="textForTyping"
+        @handle-finish-typing="handleFinishTyping"
+        @new-text="fetchText"
+        @remove-typing-history="removeRecord"
       />
-      <texts-history :historyList="typingTextsHistoryList" @deleteRecords="removeTypingHistory" />
+      <texts-history
+        :history-list="typingTextsHistoryList"
+        @delete-records="removeRecord"
+      />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import 'bootstrap/dist/css/bootstrap.css'
+import { defineComponent } from 'vue'
 import LocalStorageUtil from './utils/localStorageUtil'
 import getText from './api/getText'
 import Loader from './components/UI/UiLoader.vue'
 import TypingTrainerContainer from './components/TypingTrainerContainer.vue'
 import TextsHistory from './components/TextsHistory.vue'
-import Button from './components/UI/UiButton.vue'
 import { LOCAL_TYPING_RESULTS_KEY } from './constants'
+import { LSDeleteRecordKey, NewTextItem, TextItemsList } from '@/types'
+import UiButton from '@/components/UI/UiButton.vue'
 
-export default {
+export default defineComponent({
   name: 'App',
-  components: { Loader, TypingTrainerContainer, TextsHistory, Button },
+  components: { Loader, TypingTrainerContainer, TextsHistory, UiButton },
 
   data() {
     return {
       textForTyping: '',
       fetchError: false,
       isLoading: false,
-      typingTextsHistoryList: [],
+      typingTextsHistoryList: [] as TextItemsList,
     }
   },
 
@@ -61,11 +69,12 @@ export default {
 
       this.isLoading = false
     },
-    saveTypingResult(typeResult) {
+    saveTypingResult(typeResult: NewTextItem) {
+      const id = this.typingTextsHistoryList.length ? this.typingTextsHistoryList.at(-1)!.id + 1 : 1
+
       const typeResultWithId = {
         ...typeResult,
-        // eslint-disable-next-line no-unsafe-optional-chaining
-        id: this.typingTextsHistoryList.at(-1)?.id + 1 || 1,
+        id,
       }
 
       LocalStorageUtil.set(
@@ -75,17 +84,13 @@ export default {
       this.getTypingsHistory()
     },
     getTypingsHistory() {
-      const historyList = LocalStorageUtil.get(LOCAL_TYPING_RESULTS_KEY) || []
-
-      this.typingTextsHistoryList = historyList
+      this.typingTextsHistoryList = LocalStorageUtil.get(LOCAL_TYPING_RESULTS_KEY) || []
     },
-    removeTypingHistory(record) {
-      if (!record) return
-
+    removeRecord(record: LSDeleteRecordKey) {
       if (record === 'all') {
         LocalStorageUtil.delete(LOCAL_TYPING_RESULTS_KEY)
       } else {
-        const filteredHistory = this.typingTextsHistoryList.filter((text) => text.id !== record.id)
+        const filteredHistory = this.typingTextsHistoryList.filter((text) => text.id !== record)
 
         this.typingTextsHistoryList = filteredHistory
 
@@ -94,7 +99,7 @@ export default {
 
       this.getTypingsHistory()
     },
-    handleFinishTyping(typingResult) {
+    handleFinishTyping(typingResult: NewTextItem) {
       this.saveTypingResult(typingResult)
       this.fetchText()
     },
@@ -104,7 +109,7 @@ export default {
     this.fetchText()
     this.getTypingsHistory()
   },
-}
+})
 </script>
 
 <style lang="scss">
@@ -125,7 +130,7 @@ export default {
   );
 }
 
-.appContainer {
+.app-container {
   width: 100%;
   max-width: 1200px;
   margin: 100px auto 12px;
@@ -137,9 +142,8 @@ export default {
   box-shadow: rgb(60 64 67 / 30%) 0 1px 2px 0, rgb(60 64 67 / 15%) 0 2px 6px 2px;
 }
 
-.loaderContainer {
+.loader-container {
   width: 100%;
-
   text-align: center;
 }
 </style>

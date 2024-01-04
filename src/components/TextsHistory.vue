@@ -6,7 +6,7 @@
       <table class="table">
         <thead>
           <tr>
-            <td class="textCol">Текст</td>
+            <td class="text-col">Текст</td>
             <td>Точность</td>
             <td>Знаков в минуту</td>
             <td>Ошибок</td>
@@ -14,62 +14,78 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="textItem in historyList" :key="textItem.id">
-            <td class="textCol">{{ textItem.text }}</td>
+          <tr
+            v-for="textItem in historyList"
+            :key="textItem.id"
+          >
+            <td class="text-col">{{ textItem.text }}</td>
             <td>{{ textItem.accuracy }}%</td>
             <td>{{ textItem.charsPerMinute }}</td>
             <td>{{ textItem.errorsCount }}</td>
             <td>
-              <Button
-                colorType="btn-danger"
-                class="removeBtn"
-                @onClick="() => deleteHistoryRecord(textItem)"
+              <UiButton
+                color-type="btn-danger"
+                class="remove-btn"
+                @on-click="() => deleteHistoryRecord(textItem)"
               >
                 X
-              </Button>
+              </UiButton>
             </td>
           </tr>
         </tbody>
       </table>
-      <Button @onClick="clearHistory" colorType="btn-danger">Удалить всё</Button>
+      <UiButton
+        @on-click="clearHistory"
+        color-type="btn-danger"
+      >
+        Удалить всё
+      </UiButton>
     </div>
-    <h4 v-else class="text-center">Список пуст...</h4>
+    <h4
+      v-else
+      class="text-center"
+    >
+      Список пуст...
+    </h4>
   </div>
 </template>
 
-<script>
-import Button from './UI/UiButton.vue'
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+import UiButton from './UI/UiButton.vue'
+import { TextItem, TextItemsList } from '@/types'
 
-export default {
-  components: { Button },
+export default defineComponent({
+  components: { UiButton },
+
+  emits: ['deleteRecords'],
 
   props: {
     historyList: {
-      type: Array,
+      type: Array as PropType<TextItemsList>,
       required: true,
       default: () => [],
     },
   },
 
   methods: {
-    deleteHistoryRecord(item) {
-      this.$emit('deleteRecords', item)
+    deleteHistoryRecord(item: TextItem) {
+      this.$emit('deleteRecords', item.id)
     },
     clearHistory() {
       this.$emit('deleteRecords', 'all')
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
-.textCol {
+.text-col {
   width: 600px;
 }
 
-.removeBtn {
+.remove-btn {
   padding: 5px 10px !important;
-
   font-size: 10px !important;
 }
 </style>

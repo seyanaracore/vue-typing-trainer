@@ -2,41 +2,46 @@
   <div>
     <p v-show="isInvalidLayout">Неверная раскладка</p>
     <typing-field
-      :textForTyping="textForTyping"
-      @inputHandler="handleFieldInput"
-      :isInputError="isInputError"
-      :expectedCharIndex="expectedCharIndex"
+      @input-handler="handleFieldInput"
+      :text-for-typing="textForTyping"
+      :is-input-error="isInputError"
+      :expected-char-index="expectedCharIndex"
     />
     <aside class="d-flex justify-content-between align-items-center m-2">
       <typing-info
-        :errorsCount="errorsCount"
+        :errors-count="errorsCount"
         :accuracy="accuracy"
-        :charsPerMinute="charsPerMinute"
+        :chars-per-minute="charsPerMinute"
       />
-      <control-buttons @resetProgress="resetProgress" @newText="newText" />
+      <control-buttons
+        @reset-progress="resetProgress"
+        @new-text="newText"
+      />
     </aside>
   </div>
 </template>
 
-<script>
-import layoutValidator from '@/utils/layoutValidator'
-import { EXCEPTIONS_KEYS } from '@/constants'
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { clone } from 'lodash'
 import TypingField from './TypingField.vue'
 import TypingInfo from './TypingInfo.vue'
 import ControlButtons from './ControlButtons.vue'
+import { EXCEPTIONS_KEYS } from '@/constants'
+import layoutValidator from '@/utils/layoutValidator'
 
 const initialState = {
   errorsCount: 0,
   charsPerSecond: 0,
-  charsCountsListPerSecond: [],
+  charsCountsListPerSecond: [] as number[],
   isInputStarted: false,
   isInvalidLayout: false,
   expectedCharIndex: 0,
   isInputError: false,
-  cpmInterval: null,
+  cpmInterval: null as null | number,
 }
 
-export default {
+export default defineComponent({
   components: { TypingField, TypingInfo, ControlButtons },
 
   props: {
@@ -47,6 +52,8 @@ export default {
     },
   },
 
+  emits: ['handleFinishTyping', 'newText'],
+
   data() {
     return {
       ...initialState,
@@ -54,12 +61,12 @@ export default {
   },
 
   computed: {
-    charsPerMinute() {
+    charsPerMinute(): number {
       const keysSummary = this.charsCountsListPerSecond.reduce((a, b) => a + b, 0)
 
       return Math.floor(keysSummary / this.charsCountsListPerSecond.length) * 60 || 0
     },
-    accuracy() {
+    accuracy(): number {
       const errorsPercent = +((this.errorsCount / this.textForTyping.length) * 100).toFixed(1)
 
       return 100 - errorsPercent || 100
@@ -71,14 +78,14 @@ export default {
       this.$emit('newText')
     },
     stopCharsWatcher() {
+      if (!this.cpmInterval) return
+
       clearInterval(this.cpmInterval)
     },
     resetProgress() {
       this.stopCharsWatcher()
 
-      Object.keys(initialState).forEach((key) => {
-        this[key] = initialState[key]
-      })
+      Object.assign(this, clone(initialState))
     },
     startCharsWatcher() {
       this.cpmInterval = setInterval(() => {
@@ -90,15 +97,14 @@ export default {
       }, 1000)
     },
 
-    handleFieldInput(e) {
+    handleFieldInput(e: KeyboardEvent) {
       const pressedKey = e.key
-      const isExceptionKey = EXCEPTIONS_KEYS.some((avaidingKey) => avaidingKey === pressedKey)
+      const isExceptionKey = EXCEPTIONS_KEYS.includes(pressedKey)
 
       if (isExceptionKey) return
       if (!this.isInputStarted) this.isInputStarted = true
 
-      if (layoutValidator(pressedKey)) this.isInvalidLayout = false
-      else this.isInvalidLayout = true
+      this.isInvalidLayout = !layoutValidator(pressedKey)
 
       const exceptedKey = this.textForTyping[this.expectedCharIndex]
 
@@ -140,5 +146,5 @@ export default {
   beforeUnmount() {
     this.stopCharsWatcher()
   },
-}
+})
 </script>

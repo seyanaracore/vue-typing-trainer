@@ -1,5 +1,5 @@
 <template>
-  <div class="infoBlock">
+  <div class="info-block">
     <p>
       Ошибок: <span>{{ errorsCount }}</span>
     </p>
@@ -12,8 +12,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     errorsCount: {
       type: Number,
@@ -28,11 +30,11 @@ export default {
       required: true,
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
-.infoBlock {
+.info-block {
   display: flex;
 
   & > p {

@@ -1,11 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 class Api {
   // eslint-disable-next-line class-methods-use-this
-  #request(url, method) {
+  _request(url: string, method: RequestInit['method']) {
     return fetch(url, { method })
   }
 
-  async get(url) {
-    const response = await this.#request(url, 'GET')
+  async get(url: string) {
+    const response = await this._request(url, 'GET')
 
     return response.json()
 

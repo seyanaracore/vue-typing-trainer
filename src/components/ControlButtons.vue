@@ -1,15 +1,23 @@
 <template>
-  <div class="controlButtonsContainer">
-    <Button @onClick="newTextHandler">Новый текст</Button>
-    <Button @onClick="resetProgressHandler" colorType="btn-warning">Сброс</Button>
+  <div class="control-buttons-container">
+    <UiButton @click="newTextHandler">Новый текст</UiButton>
+    <UiButton
+      @click="resetProgressHandler"
+      color-type="btn-warning"
+    >
+      Сброс
+    </UiButton>
   </div>
 </template>
 
-<script>
-import Button from './UI/UiButton.vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
+import UiButton from './UI/UiButton.vue'
 
-export default {
-  components: { Button },
+export default defineComponent({
+  components: { UiButton },
+
+  emits: ['resetProgress', 'newText'],
 
   methods: {
     newTextHandler() {
@@ -19,11 +27,11 @@ export default {
       this.$emit('resetProgress')
     },
   },
-}
+})
 </script>
 
 <style scoped>
-.controlButtonsContainer *:not(:first-child) {
+.control-buttons-container *:not(:first-child) {
   margin-left: 20px;
 }
 </style>

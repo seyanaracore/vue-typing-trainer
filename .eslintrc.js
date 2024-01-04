@@ -1,17 +1,46 @@
 module.exports = {
   root: true,
+
   env: {
     browser: true,
     es2021: true,
     node: true,
   },
-  extends: ['plugin:vue/essential', '@vue/eslint-config-airbnb', 'plugin:prettier/recommended'],
+
+  extends: [
+    'plugin:vue/vue3-strongly-recommended',
+    '@vue/eslint-config-airbnb-with-typescript',
+    'plugin:prettier/recommended',
+    'eslint:recommended',
+    'plugin:import/errors',
+    'plugin:import/recommended',
+    '@vue/typescript',
+  ],
+
+  plugins: ['import'],
+
   parserOptions: {
-    parser: '@babel/eslint-parser',
+    parser: '@typescript-eslint/parser',
   },
+
   rules: {
-    'no-restricted-exports': 'off',
-    'react/react-in-jsx-scope': 'off',
+    'prettier/prettier': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'parent',
+          'sibling',
+          'index',
+          'internal',
+          'object',
+          'unknown',
+          'type',
+        ],
+      },
+    ],
     'padding-line-between-statements': [
       'error',
       {
@@ -66,10 +95,11 @@ module.exports = {
       },
     ],
   },
+
   settings: {
     'import/resolver': {
       alias: {
-        extensions: ['.js', '.jsx', '.json'],
+        extensions: ['.js', '.jsx', '.json', '.ts'],
         map: [['@', './src']],
       },
     },
