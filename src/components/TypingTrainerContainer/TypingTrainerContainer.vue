@@ -6,6 +6,7 @@
       :text-for-typing="textForTyping"
       :is-input-error="isInputError"
       :expected-char-index="expectedCharIndex"
+      ref="typingField"
     />
     <aside class="d-flex justify-content-between align-items-center m-2">
       <typing-info
@@ -39,6 +40,7 @@ const initialState = {
   expectedCharIndex: 0,
   isInputError: false,
   cpmInterval: null as null | number,
+  typingField: null as null | typeof TypingField,
 }
 
 export default defineComponent({
@@ -86,6 +88,7 @@ export default defineComponent({
       this.stopCharsWatcher()
 
       Object.assign(this, clone(initialState))
+      if (this.typingField) this.typingField.focusInput()
     },
     startCharsWatcher() {
       this.cpmInterval = setInterval(() => {
